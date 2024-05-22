@@ -1,0 +1,1 @@
+# sisend tuleb kujul tooted = [(1, "Kartulikrõps Lays Roheline", 4.77), (2, "Jäätis Limpa", 0.69), (3, "Tualettpabeer Zewa", 12.55)]
