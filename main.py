@@ -17,7 +17,7 @@ from PIL import Image
 # Kui juturobot ei leia täpselt, siis küsib üle, kuni saab õige
 
 def lae_pilt(pildinimi):
-    path = f"./tsekid/{pildinimi}"
+    path = f"tsekid/{pildinimi}"
     image = Image.open(path)
     image.show()
 
