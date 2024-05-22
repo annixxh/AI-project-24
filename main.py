@@ -1,15 +1,5 @@
-## Projekti kirjeldus
-
-#Näiteks: sisestad inimesed kelle vahel tšekk jagada ja saad valida kellele mingi rida
-# või alamkategooria jagada. Lisaks toodetele on võimalik kogu tšekki protsentidega ka jagada.
-# Peale ära jagamist tagastatakse ülevaatlik koondtulemus tekstina, mida edasi oma sõpradele jagada,
-# et raha tagasi saada.
-
-#Peame leidma viisi kuidas kõik vajalikud read ja ainult vajalikud read pildilt kätte saada.
-# Erinevate poodide tšekid on erineva kujundusega.
-# Lisaks peab pilti kindlasti töötlema valguse ning positsiooni osas.
-# Inimese ja arvuti suhtluseks on tarvis luua juturoboti taoline asi.
-# Selle jaoks on vaja luua tekst ning vastustele vastavalt küsimused ja tagastused.
+import os
+from PIL import Image
 
 # 1. Sisestad pildi
 # 2. võibolla vaja image töötlust
@@ -21,10 +11,15 @@
 #
 # juturobot, küsib mida teha ning kui ei tea täpselt mida teha siis küsib üle
 #
-# Et pildilt arusaada, mis toodet kuhu jaotada, peab inimene ütlema tšeki pealt kas toote järjekorranumbri või siis toote nimest vähemalt mingi osa.
+# Et pildilt arusaada, mis toodet kuhu jaotada, peab inimene ütlema tšeki pealt,
+# kas toote järjekorranumbri või siis toote nimest vähemalt mingi osa.
 #
 # Kui juturobot ei leia täpselt, siis küsib üle, kuni saab õige
 
-print("pls work")
-def pls():
-    pls()
+def lae_pilt(pildinimi):
+    path = f"./tsekid/{pildinimi}"
+    image = Image.open(path)
+    image.show()
+
+
+lae_pilt("tsekk1")
