@@ -24,3 +24,5 @@
 # Et pildilt arusaada, mis toodet kuhu jaotada, peab inimene ütlema tšeki pealt kas toote järjekorranumbri või siis toote nimest vähemalt mingi osa.
 #
 # Kui juturobot ei leia täpselt, siis küsib üle, kuni saab õige
+
+print("hello world")
