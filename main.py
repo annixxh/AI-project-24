@@ -25,4 +25,4 @@
 #
 # Kui juturobot ei leia täpselt, siis küsib üle, kuni saab õige
 
-print("hello world")
+print("pls work")
