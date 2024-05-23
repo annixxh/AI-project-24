@@ -35,9 +35,6 @@ def leia_pilt(pildinimi):
 # väljund: Image tüübina pilt, mis laeti kasutja arvutist üles
 #########################################################
 def lae_ules_pilt():
-    # aken, kus üles laadida pilti, vb muuta GUI-d
-    root = tk.Tk()
-    root.withdraw()
 
     file_path = filedialog.askopenfilename(
         title="Select an Image",
@@ -52,15 +49,20 @@ def lae_ules_pilt():
             destination = os.path.join(directory, image_name)
             shutil.move(file_path, destination)
             image = leia_pilt(image_name)
+            print(f"uploading method: before ifelse: image type: {type(image)}")
             if image:
-                image.show()
+                print(f"Successfully uploaded image {image_name}")
+                # image.show()
+                return image
             else:
                 raise FileNotFoundError(
                     f"Failed to load the image named '{image_name}' from the '{directory}' directory.")
         except Exception as e:
             print(e)
+            return None
     else:
         print("No file selected.")
+        return None
 
 # lae_ules_pilt()
 
