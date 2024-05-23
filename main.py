@@ -70,10 +70,18 @@ def show_first_page(root):
 ###########################################################
 def show_second_page(frame, image):
     for widget in frame.winfo_children():
-        widget.destroy()  # Clear the first page
+        widget.destroy()
 
     label_title = tk.Label(frame, text="Tšekk, mida analüüsin: ", font=("Helvetica", 14))
     label_title.place(x=200, y=50)
+
+    # Resize the image to fit within the frame (max height 400)
+    max_height = 400
+    width, height = image.size
+    if height > max_height:
+        new_height = max_height
+        new_width = int((new_height / height) * width)
+        image = image.resize((new_width, new_height), Image.ANTIALIAS)
 
     print(image)
     print(f"Esimesel lehel leitud pildi tyyp: {type(image)}")
@@ -85,6 +93,8 @@ def show_second_page(frame, image):
     label_image = tk.Label(frame, image=photo_image)
     label_image.image = photo_image  # Keep a reference to the image to prevent it from being garbage collected
     label_image.pack(pady=20)
+
+    
 
 
 ###########################################################
