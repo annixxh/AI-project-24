@@ -81,10 +81,12 @@ Juhend:
    vajadusel saab keerata pilti õigetpidi või minna uuesti kropeerimise juurde
 
    kui kropeeritud pilt sobib, siis vajutada nuppu 'Liigu edasi'
-10. **Tekib ette uus leht, sellel lehel tuleb sisestada:**
+9. **Tekib ette uus leht, sellel lehel tuleb sisestada:**
 
    kelle vahel jagada tooteid (inimeste nimed kujul: esimeneNimi, teineNimi)
+   
    mis tooted kellele jagada (#TODO)
+   
    kes, kui palju maksis (#TODO)
-12. **Kui vajutada nuppu 'Arvuta tulemus', siis avaneb viimane leht, kus on arvutatud iga inimese puhul palju ta peab kellele maksma**
+10. **Kui vajutada nuppu 'Arvuta tulemus', siis avaneb viimane leht, kus on arvutatud iga inimese puhul palju ta peab kellele maksma**
 
