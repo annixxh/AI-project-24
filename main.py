@@ -4,21 +4,21 @@ import numpy as np
 import pilditootlus
 import tkinter as tk
 from PIL import Image, ImageTk
-import os
-import imagecrop
-from tkinter import ttk, filedialog, messagebox
+import pytesseractPilditootlus
 
-
-# 1. Sisestad pildi või otsid nime järgi pildi nime
-# 2. kasutaja kropeerib pildi sobivaks
-# 2. programm loeb sisse kropeeritud pildi ning küsib, mida teha (kuidas jagada) - juturobot
-# 3. programm loeb pildi pealt tooted ning nende hinnad
-# 4. vastavalt kasutaja soovile jaotab programm automaatselt ära, kes kui palju peab maksma
+# 1. Sisestad pildi või otsid nime järgi pildi nime                                             # todo DONE
+# 2. kasutaja kropeerib pildi sobivaks                                                          # todo DONE
+# 2. programm loeb sisse kropeeritud pildi ning küsib, mida teha (kuidas jagada) - juturobot    # todo poolik
+# 3. programm loeb pildi pealt tooted ning nende hinnad                                         # todo VAJA TEHA
+# 4. vastavalt kasutaja soovile jaotab programm automaatselt ära, kes kui palju peab maksma     # todo VAJA TEHA
 
 ###########################################################
 # GUI käivitamine
 ###########################################################
 
+
+# todo NBNBNBNB! Et pytesseract töötaks peab võibolla pytesseractPilditootlus.py failis ->
+# todo -> muutma ära tesseracti pathi enda arvutis oleva pathiga
 
 def __init__(self, root):
     self.root = root
@@ -37,6 +37,7 @@ def __init__(self, root):
 #                    ESIMENE LEHT
 # kas laadida pilt üles või otsida nime järgi
 # liigub edasi, vaid kui on saadud Image tüüpi pilt vastuseks kummaltki nupult
+# todo see leht on täiesti tehtud
 ###########################################################
 def show_first_page(root):
     frame = tk.Frame(root, width=600, height=600)
@@ -72,6 +73,7 @@ def show_first_page(root):
 #                     TEINE LEHT
 # kasutaja peab croppima pildi õigeks suuruseks
 # liigub edasi, kui pilt on cropitud
+# todo see leht on täiesti tehtud
 ###########################################################
 mouse_pressed = False
 starting_x = starting_y = ending_x = ending_y = -1
@@ -97,6 +99,7 @@ def show_second_page(frame, image):
     starting_x = starting_y = ending_x = ending_y = -1
 
     # funktsioon, mille abil kasutaja klikkimise ja hiire liigutamise peale kropeeritakse pilt
+    # kood võetud siit: https://www.engineerknow.com/2022/12/crop-image-simple-app-using-cv2-numpy.html
     def mousebutton(event, x, y, flags, param):
         global img_dup, starting_x, starting_y, ending_x, ending_y, mouse_pressed, cropped
         global mouse_pressed
@@ -148,6 +151,14 @@ def show_second_page(frame, image):
         kusi_kas_sobib(frame, cropped, algne)
 
 
+###########################################################
+#                     VAHELEHT
+# küsib, kas kropeeritud pilt sobib, võimalik minna tagasi kropeerima
+# või pöörata pilti. Liigub edasi, kui pilt sobib.
+# todo see leht on täiesti tehtud
+###########################################################
+
+
 def kusi_kas_sobib(frame, cropped, algne):
     for widget in frame.winfo_children():
         widget.destroy()
@@ -178,7 +189,7 @@ def kusi_kas_sobib(frame, cropped, algne):
     label_instruction.place(x=150, y=520)
 
     button_edasi = tk.Button(frame, text="Liigu edasi",
-                             command=lambda: show_third_page(frame, image))
+                             command=lambda: show_third_page(frame))
     button_edasi.place(x=150, y=550)
 
     button_uuesti = tk.Button(frame, text="Kropeeri uuesti",
@@ -186,8 +197,115 @@ def kusi_kas_sobib(frame, cropped, algne):
     button_uuesti.place(x=250, y=550)
 
     button_keera = tk.Button(frame, text="Keera pilti (90)",
-                             command=lambda: turn_image(frame, pic))
+                             command=lambda: turn_image(frame))
     button_keera.place(x=350, y=550)
+
+
+###########################################################
+#                     KOLMAS LEHT
+# Küsib kasutajalt, kelle vahel jaotada tšekilt leitavad tooted
+# Lisaks, millised tooted peaks kellele minema
+# pildi pealt saadakse tekst kätte, vaja leida sellest tekstist n.ö õiged tooted üles
+#
+# TODO lõpetada see GUI leht
+# TODO sellel lehel:
+# küsida kasutajalt mis tooted kellele maksta ning lisaks kes kui palju maksis
+# luua vajalikud variablid, kus need hoidakse (pead ilmselt global tegema, vt save_inimesed()
+# viidata õigetele meetoditele, et arvutusloogika toimiks ning jõuaks tagasi siia main.py-sse ka
+# NB! sa võid muuta kõiki meetodeid mis on seotud show_third_page() ja pytesseractPilditootlus.py failis
+# aga proovi mitte muuta meetodeid mis on seotud esimeste lehtedega PLS, muidu katki :))
+# vaata eelmise lehtede ülesehitust, kui tahad lisada GUI-le lable'id jne
+# vt märget 'kropeeritud.png' kohta selle meetodi all
+# sinul ei tohiks vaja minna mingit pildi n.ö üleslaadimis või teisendus paska
+# aka sa peaks saama kõik kätte cv2.imread('kropeeritud.png')ga
+# peamine arvutus peaks olema võimalik pytesseractPilditootlus failis
+# TODO pytesseractPilditootlus.py failis:
+# leida saadud tekstist õiged read üles ning nendest eraldada summad, lisada need summad õigetele inimestele
+# mingi arvutusloogika, mille järgi arvutatakse ära kellele mis summa läheb (arvestades ka palju keegi algselt maksis)
+###########################################################
+
+# inimesed = [] # nt inimesed = [Stina, Anni] ehk kelle vahel jagada
+# jaotus = {} # nt {Stina: 5.20, Anni: 6.99}  ehk see mis siis lopuks keegi peab tagasi maksma
+# maksmised = {} # nt {Stina: 12.00, Anni: 0.00} ehk see palju keegi maksis
+def show_third_page(frame):
+    for widget in frame.winfo_children():
+        widget.destroy()
+    label_title = tk.Label(frame, text="Kelle vahel mida jagame?", font=("Helvetica", 16))
+    label_title.place(x=150, y=100)
+    # leiab pildilt pytesseractiga teksti
+    # NB! Failis pytesserractPilditootlus on vaja muuta tesseract path oma arvutis olevaks pathiks
+    teksti_read = pytesseractPilditootlus.tootle_pilti_pytesseractiga()
+    print("Pildilt loetud tekst on: ")
+    print(teksti_read)
+    lable_kysimus = tk.Label(frame, text="Kelle vahel soovid summad jagada?")
+    lable_kysimus.place(x=150, y=150)
+    entry_kysimus = tk.Entry()
+    entry_kysimus.place(x=150, y=200)
+    save_button = tk.Button(frame, text="Save", command=lambda: save_inimesed(entry_kysimus))
+    save_button.place(x=300, y=200)
+
+    # TODO lable ja küsimus, kellele mis toode läheb või siis checkboxid
+    # TODO lable ja küsimus, kes palju maksis
+
+    # seda nuppu vajutades laheb viimasele lehele, kus peaks koik juba valja arvutatud olema
+    button_vastuse_juurde = tk.Button(frame, text="Arvuta vastus", command=lambda: viimasele_lehele(frame))
+    button_vastuse_juurde.place(x=200, y=500)
+
+    # TODO mida veel teha vaja, et koik siin tootaks:
+    # märkus: variable 'cropped' ei ole enam vaja, kuna alati programmi jooksutamisel tekib fail 'kropeeritud.png'
+    # mis igal uuel jooksutamisel kirjtatakse üle, seega var cropped asemel saame igal pool kasutada lihtsalt
+    # 'kropeeritud.png' ja see töötab (plus seda lihtsam cv2.imread('kropeeritud.png') kaudu üles laadida)
+    # TODO luua ja panna inimesed kelle vahel jagada mingi dicti või listi, kus on lisaks ka nendele antud summa jne
+    #    vt selle meetodi yles, need variablid luua ja neid rakendada loogikas kuidagi
+    # TODO (pytesseractPilditootlus.py failis) töödelda pytesseracti antud tekste ja leida õiged tooted sealt üles
+    #   + selle toote summa ja designeerida õigele inimesele
+    # TODO arvutusloogika, et viimasel lehel esitleda, kes kui palju kellele maksma peab
+    # TODO viimase lehe GUI
+
+###########################################################
+#                     NELJAS LEHT
+# Näitab kasutajale kõikide inimeste puhul palju nad kellele võlgu on
+# Võibolla võimalik minna tagasi algusesse?
+# TODO täiesti tegemata
+# vaata ka viimasele_lehele() abimeetodit
+# (buttoni vajutades toimuvad arvutused ja viib viimasele lehele, kus esitletakse arvutuste tulemused)
+# sellel lehel lihtsalt näidata tulemusi, rohkem eriti ei ole
+# lisasin lehe alla nupu, et minna tagasi algusesse
+###########################################################
+
+def show_fourth_page(frame):
+    for widget in frame.winfo_children():
+        widget.destroy()
+    label_title = tk.Label(frame, text="Jaotused on: ", font=("Helvetica", 16))
+    label_title.place(x=150, y=100)
+    print("Nüüd neljanda lehe juures")
+    # vastused = mingimeetod() VOI SIIS pane show_fourth_page(frame, vastused)
+    # TODO esitleda vastused
+    button_algusesse = tk.Button(text="Tagasi algusesse", command=lambda: tagasi_algusesse(frame))
+    button_algusesse.place(x=200, y=550)
+
+
+###########################################################
+#                  ABIMEETODID
+# seletused meetoditele sees, mitte väljas
+###########################################################
+
+# TODO
+def viimasele_lehele(frame):
+    # TODO voibolla vaja global muutujaid teha
+    # seda meetodit ei ole tegelt vaja, kui teha koik vajalik show_third_page() meetodis ara
+    # aga siin voib valja kutsuda meetodid, mis koik vajaliku ara arvutab
+    # ja siis kui olemas siis liigub edasi neljandale lehele
+
+    # NAITEKS
+    # vastus = mingimeetod(jaotus, maksmised)
+    # if vastus is not {}:
+    #     print("Kõik vajalik arvutatud")
+    #     print("Liigume viimasele lehele")
+    #     show_fourth_page(frame)
+    # praegu laheb niisama edasi
+    show_fourth_page(frame)
+
 
 rotation_angle = 0
 def turn_image(frame, pic):
@@ -218,6 +336,9 @@ def turn_image(frame, pic):
 
 
 def resize_image(image, max_width, max_height):
+    #####################################################
+    # Abimeetod, mis aitab ette antud pildi suurust kohandada kindla suuruse järgi
+    ####################################################
     width, height = image.size
     if width > max_width or height > max_height:
         ratio = min(max_width / width, max_height / height)
@@ -227,19 +348,20 @@ def resize_image(image, max_width, max_height):
     return image
 
 
-def show_third_page(frame, cropped):
-    for widget in frame.winfo_children():
-        widget.destroy()
-    label_title = tk.Label(frame, text="Kolmas leht: ", font=("Helvetica", 16))
-    label_title.place(x=150, y=100)
+inimesed_algne_vastus = ""
+def save_inimesed(entry):
+    global inimesed_algne_vastus
+    input_text = entry.get()
+    print("Kelle vahel jagada on: ")
+    print(inimesed_algne_vastus)
+    inimesed_algne_vastus = input_text
 
-
-###########################################################
-# Esimese lehe button_choose abimeetod
-# küsib kasutajalt failinime, nupu Enter vajutades kontrollib, kas see on olemas
-###########################################################
 
 def kusi_pildi_nime(frame):
+    ###########################################################
+    # Esimese lehe button_choose abimeetod
+    # küsib kasutajalt failinime, nupu Enter vajutades kontrollib, kas see on olemas
+    ###########################################################
     lable = tk.Label(frame, text="Sisesta palun faili nimi: ")
     lable.place(x=235, y=400)
     entry_field = tk.Entry(frame)
@@ -250,12 +372,12 @@ def kusi_pildi_nime(frame):
     button_submit.place(x=400, y=450)
 
 
-###########################################################
-# Esimese lehe button_choose abimeetod
-# kontrollib, kas kasutaja sisestatud failinimi on olemas
-# tagastab saadud pildi või None
-###########################################################
 def kas_leidus(frame, vastus):
+    ###########################################################
+    # Esimese lehe button_choose abimeetod
+    # kontrollib, kas kasutaja sisestatud failinimi on olemas
+    # tagastab saadud pildi või None
+    ###########################################################
     kasleidus = pilditootlus.leia_pilt(vastus)
     if kasleidus is not None:
         text = tk.Label(frame, text=f"Pilt {vastus} leidus")
@@ -267,13 +389,13 @@ def kas_leidus(frame, vastus):
         text.place(x=170, y=500)
 
 
-###########################################################
-# Esimese lehe button_upload ja button_choose abimeetodid
-# kontrollib, kas on saadud kätte pilt
-# kui jah, siis liigub edasi teisele lehele
-# kui ei, siis jääb esimese lehe juurde
-###########################################################
 def check_and_proceed(action, frame):
+    ###########################################################
+    # Esimese lehe button_upload ja button_choose abimeetodid
+    # kontrollib, kas on saadud kätte pilt
+    # kui jah, siis liigub edasi teisele lehele
+    # kui ei, siis jääb esimese lehe juurde
+    ###########################################################
     result = action()
     if isinstance(result, Image.Image):
         print("A valid picture was found, going to the second page")
@@ -283,22 +405,34 @@ def check_and_proceed(action, frame):
         print("No valid image returned, staying on the first page.")
 
 
-###########################################################
-# Esimese lehe button_upload ja button_choose abimeetodid
-# liigub edasi teise lehe juurde
-###########################################################
 def proceed(frame, result):
+    ###########################################################
+    # Esimese lehe button_upload ja button_choose abimeetodid
+    # liigub edasi teise lehe juurde
+    ###########################################################
     print("A valid picture was found, going to the second page")
     print(f"Image size: {result.size}, mode: {result.mode}")
     show_second_page(frame, result)
 
 
+# TODO
+def tagasi_algusesse(frame):
+    # TODO vaadata üle, et kõik ikkagi ära kustuks ning tuleks n.ö puhas esimene leht jälle ette
+    print("Lähme tagasi esimesele lehele")
+    for widget in frame.winfo_children():
+        widget.pack_forget()
+    show_first_page(rootglobal)
+
+
 ###########################################################
 # GUI peameetod
 ###########################################################
+rootglobal = None
 def main():
+    global rootglobal
     root = tk.Tk()
     root.title("Application")
+    rootglobal = root
     show_first_page(root)
     root.mainloop()
 
