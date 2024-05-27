@@ -227,29 +227,99 @@ def kusi_kas_sobib(frame, cropped, algne):
 # inimesed = [] # nt inimesed = [Stina, Anni] ehk kelle vahel jagada
 # jaotus = {} # nt {Stina: 5.20, Anni: 6.99}  ehk see mis siis lopuks keegi peab tagasi maksma
 # maksmised = {} # nt {Stina: 12.00, Anni: 0.00} ehk see palju keegi maksis
+items = []
+selections = {}
+name_totals = {}
 def show_third_page(frame):
+    global items, selections, name_totals
+
+    def create_checklist(parent):
+        check_vars = []
+        for index, (idx, name, price) in enumerate(items):
+            var = tk.BooleanVar()
+            chk = tk.Checkbutton(parent, text=f"{name} - {price:.2f}", variable=var)
+            chk.grid(row=index, column=0, sticky='w')
+            check_vars.append((var, idx, name, price))
+        return check_vars
+
+    def show_selected():
+        global items, selections, name_totals
+        selected_items = []
+        total = 0.0
+        for var, idx, name, price in check_vars:
+            if var.get():
+                selected_items.append((name, price))
+                total += price
+
+        # Update items list by removing selected items
+        remaining_items = [item for item in items if item[1] not in [name for name, price in selected_items]]
+        items[:] = remaining_items
+
+        # Save the selections under the name entered
+        person = entry_kysimus.get()
+        if person:
+            if person not in selections:
+                selections[person] = []
+                name_totals[person] = 0.0
+            selections[person].extend(selected_items)
+            name_totals[person] += total
+
+        # Clear the entry and update the checklist
+        entry_kysimus.delete(0, tk.END)
+        update_checklist()
+
+        # If all items are selected, transition to the fourth page
+        if not items:
+            show_fourth_page(frame)
+
+    def update_checklist():
+        # Clear the current checklist
+        for widget in checklist_frame.winfo_children():
+            widget.destroy()
+
+        # Create a new checklist with the remaining items
+        global check_vars
+        check_vars = create_checklist(checklist_frame)
+
     for widget in frame.winfo_children():
         widget.destroy()
+
+
     label_title = tk.Label(frame, text="Kelle vahel mida jagame?", font=("Helvetica", 16))
     label_title.place(x=150, y=100)
+
     # leiab pildilt pytesseractiga teksti
     # NB! Failis pytesserractPilditootlus on vaja muuta tesseract path oma arvutis olevaks pathiks
     teksti_read = pytesseractPilditootlus.tootle_pilti_pytesseractiga()
     print("Pildilt loetud tekst on: ")
     print(teksti_read)
+
+    # Initialize items and selections
+    items = teksti_read
+    selections = {}
+    name_totals = {}
+
     lable_kysimus = tk.Label(frame, text="Kelle vahel soovid summad jagada?")
     lable_kysimus.place(x=150, y=150)
-    entry_kysimus = tk.Entry()
+
+    entry_kysimus = tk.Entry(frame)
     entry_kysimus.place(x=150, y=200)
-    save_button = tk.Button(frame, text="Save", command=lambda: save_inimesed(entry_kysimus))
+
+    save_button = tk.Button(frame, text="Save", command=show_selected)
     save_button.place(x=300, y=200)
+
+    checklist_frame = tk.Frame(frame)
+    checklist_frame.place(x=150, y=250)
+    check_vars = create_checklist(checklist_frame)
+
+    button_vastuse_juurde = tk.Button(frame, text="Arvuta vastus", command=lambda: viimasele_lehele(frame))
+    button_vastuse_juurde.place(x=200, y=500)
+
+    # show_selected_button = tk.Button(frame, text="Show Selected", command=show_selected)
+    # show_selected_button.place(x=150, y=450)
 
     # TODO lable ja küsimus, kellele mis toode läheb või siis checkboxid
     # TODO lable ja küsimus, kes palju maksis
-
-    # seda nuppu vajutades laheb viimasele lehele, kus peaks koik juba valja arvutatud olema
-    button_vastuse_juurde = tk.Button(frame, text="Arvuta vastus", command=lambda: viimasele_lehele(frame))
-    button_vastuse_juurde.place(x=200, y=500)
 
     # TODO mida veel teha vaja, et koik siin tootaks:
     # märkus: variable 'cropped' ei ole enam vaja, kuna alati programmi jooksutamisel tekib fail 'kropeeritud.png'
@@ -274,15 +344,33 @@ def show_third_page(frame):
 ###########################################################
 
 def show_fourth_page(frame):
+    global selections, name_totals
+
     for widget in frame.winfo_children():
         widget.destroy()
+
     label_title = tk.Label(frame, text="Jaotused on: ", font=("Helvetica", 16))
     label_title.place(x=150, y=100)
     print("Nüüd neljanda lehe juures")
-    # vastused = mingimeetod() VOI SIIS pane show_fourth_page(frame, vastused)
-    # TODO esitleda vastused
+
+    y_position = 100
+    for person, items in selections.items():
+        total = sum(price for name, price in items)
+        label_person = tk.Label(frame, text=f"{person}: {total:.2f}", font=("Helvetica", 12))
+        label_person.place(x=150, y=y_position)
+        y_position += 30
+        for name, price in items:
+            label_item = tk.Label(frame, text=f"  {name} - {price:.2f}", font=("Helvetica", 10))
+            label_item.place(x=150, y=y_position)
+            y_position += 20
+
     button_algusesse = tk.Button(text="Tagasi algusesse", command=lambda: tagasi_algusesse(frame))
     button_algusesse.place(x=200, y=550)
+
+    print("Nüüd neljanda lehe juures")
+    # vastused = mingimeetod() VOI SIIS pane show_fourth_page(frame, vastused)
+    # TODO esitleda vastused
+
 
 
 ###########################################################
@@ -305,6 +393,12 @@ def viimasele_lehele(frame):
     #     show_fourth_page(frame)
     # praegu laheb niisama edasi
     show_fourth_page(frame)
+    print("Calculating the final result...")
+    print("Selections by each person:")
+    for person, items in selections.items():
+        print(f"{person}:")
+        for name, price in items:
+            print(f"  {name} - {price:.2f}")
 
 
 rotation_angle = 0
