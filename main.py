@@ -197,7 +197,7 @@ def kusi_kas_sobib(frame, cropped, algne):
     button_uuesti.place(x=250, y=550)
 
     button_keera = tk.Button(frame, text="Keera pilti (90)",
-                             command=lambda: turn_image(frame))
+                             command=lambda: turn_image(frame, pic))
     button_keera.place(x=350, y=550)
 
 
@@ -289,10 +289,13 @@ def show_third_page(frame):
     #print(teksti_read)
 
 
+
+    teksti_read = pytesseractPilditootlus.tootle_pilti_pytesseractiga()
+    print("Pildilt loetud tekst on: ")
+    print(teksti_read)
     if not items:
-        teksti_read = pytesseractPilditootlus.tootle_pilti_pytesseractiga()
-        print("Pildilt loetud tekst on: ")
-        print(teksti_read)
+        if len(selections) > 0:
+            viimasele_lehele(frame)
         items = teksti_read
         selections = {}
         name_totals = {}
@@ -310,8 +313,8 @@ def show_third_page(frame):
     checklist_frame.place(x=150, y=250)
     check_vars = create_checklist(checklist_frame)
 
-    button_vastuse_juurde = tk.Button(frame, text="Arvuta vastus", command=lambda: viimasele_lehele(frame))
-    button_vastuse_juurde.place(x=200, y=525)
+    #button_vastuse_juurde = tk.Button(frame, text="Arvuta vastus", command=lambda: viimasele_lehele(frame))
+    #button_vastuse_juurde.place(x=200, y=525)
 
     # show_selected_button = tk.Button(frame, text="Show Selected", command=show_selected)
     # show_selected_button.place(x=150, y=450)
@@ -351,16 +354,7 @@ def show_fourth_page(frame):
     label_title.place(x=150, y=100)
     print("Nüüd neljanda lehe juures")
 
-    y_position = 100
-    for person, items in selections.items():
-        total = sum(price for name, price in items)
-        label_person = tk.Label(frame, text=f"{person}: {total:.2f}", font=("Helvetica", 12))
-        label_person.place(x=150, y=y_position)
-        y_position += 30
-        for name, price in items:
-            label_item = tk.Label(frame, text=f"  {name} - {price:.2f}", font=("Helvetica", 10))
-            label_item.place(x=150, y=y_position)
-            y_position += 20
+
 
     button_algusesse = tk.Button(text="Tagasi algusesse", command=lambda: tagasi_algusesse(frame))
     button_algusesse.place(x=200, y=550)
