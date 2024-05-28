@@ -37,7 +37,6 @@ def __init__(self, root):
 #                    ESIMENE LEHT
 # kas laadida pilt üles või otsida nime järgi
 # liigub edasi, vaid kui on saadud Image tüüpi pilt vastuseks kummaltki nupult
-# todo see leht on täiesti tehtud
 ###########################################################
 def show_first_page(root):
     frame = tk.Frame(root, width=600, height=600)
@@ -73,7 +72,6 @@ def show_first_page(root):
 #                     TEINE LEHT
 # kasutaja peab croppima pildi õigeks suuruseks
 # liigub edasi, kui pilt on cropitud
-# todo see leht on täiesti tehtud
 ###########################################################
 mouse_pressed = False
 starting_x = starting_y = ending_x = ending_y = -1
@@ -155,7 +153,6 @@ def show_second_page(frame, image):
 #                     VAHELEHT
 # küsib, kas kropeeritud pilt sobib, võimalik minna tagasi kropeerima
 # või pöörata pilti. Liigub edasi, kui pilt sobib.
-# todo see leht on täiesti tehtud
 ###########################################################
 
 
@@ -206,22 +203,6 @@ def kusi_kas_sobib(frame, cropped, algne):
 # Küsib kasutajalt, kelle vahel jaotada tšekilt leitavad tooted
 # Lisaks, millised tooted peaks kellele minema
 # pildi pealt saadakse tekst kätte, vaja leida sellest tekstist n.ö õiged tooted üles
-#
-# TODO lõpetada see GUI leht
-# TODO sellel lehel:
-# küsida kasutajalt mis tooted kellele maksta ning lisaks kes kui palju maksis
-# luua vajalikud variablid, kus need hoidakse (pead ilmselt global tegema, vt save_inimesed()
-# viidata õigetele meetoditele, et arvutusloogika toimiks ning jõuaks tagasi siia main.py-sse ka
-# NB! sa võid muuta kõiki meetodeid mis on seotud show_third_page() ja pytesseractPilditootlus.py failis
-# aga proovi mitte muuta meetodeid mis on seotud esimeste lehtedega PLS, muidu katki :))
-# vaata eelmise lehtede ülesehitust, kui tahad lisada GUI-le lable'id jne
-# vt märget 'kropeeritud.png' kohta selle meetodi all
-# sinul ei tohiks vaja minna mingit pildi n.ö üleslaadimis või teisendus paska
-# aka sa peaks saama kõik kätte cv2.imread('kropeeritud.png')ga
-# peamine arvutus peaks olema võimalik pytesseractPilditootlus failis
-# TODO pytesseractPilditootlus.py failis:
-# leida saadud tekstist õiged read üles ning nendest eraldada summad, lisada need summad õigetele inimestele
-# mingi arvutusloogika, mille järgi arvutatakse ära kellele mis summa läheb (arvestades ka palju keegi algselt maksis)
 ###########################################################
 
 # inimesed = [] # nt inimesed = [Stina, Anni] ehk kelle vahel jagada
@@ -323,29 +304,10 @@ def show_third_page(frame):
     # show_selected_button = tk.Button(frame, text="Show Selected", command=show_selected)
     # show_selected_button.place(x=150, y=450)
 
-    # TODO lable ja küsimus, kellele mis toode läheb või siis checkboxid
-    # TODO lable ja küsimus, kes palju maksis
-
-    # TODO mida veel teha vaja, et koik siin tootaks:
-    # märkus: variable 'cropped' ei ole enam vaja, kuna alati programmi jooksutamisel tekib fail 'kropeeritud.png'
-    # mis igal uuel jooksutamisel kirjtatakse üle, seega var cropped asemel saame igal pool kasutada lihtsalt
-    # 'kropeeritud.png' ja see töötab (plus seda lihtsam cv2.imread('kropeeritud.png') kaudu üles laadida)
-    # TODO luua ja panna inimesed kelle vahel jagada mingi dicti või listi, kus on lisaks ka nendele antud summa jne
-    #    vt selle meetodi yles, need variablid luua ja neid rakendada loogikas kuidagi
-    # TODO (pytesseractPilditootlus.py failis) töödelda pytesseracti antud tekste ja leida õiged tooted sealt üles
-    #   + selle toote summa ja designeerida õigele inimesele
-    # TODO arvutusloogika, et viimasel lehel esitleda, kes kui palju kellele maksma peab
-    # TODO viimase lehe GUI
-
 ###########################################################
 #                     NELJAS LEHT
 # Näitab kasutajale kõikide inimeste puhul palju nad kellele võlgu on
-# Võibolla võimalik minna tagasi algusesse?
-# TODO täiesti tegemata
-# vaata ka viimasele_lehele() abimeetodit
-# (buttoni vajutades toimuvad arvutused ja viib viimasele lehele, kus esitletakse arvutuste tulemused)
-# sellel lehel lihtsalt näidata tulemusi, rohkem eriti ei ole
-# lisasin lehe alla nupu, et minna tagasi algusesse
+#
 ###########################################################
 
 def show_fourth_page(frame):
@@ -380,8 +342,7 @@ def show_fourth_page(frame):
     button_algusesse.place(x=150, y=550)
 
     print("Nüüd neljanda lehe juures")
-    # vastused = mingimeetod() VOI SIIS pane show_fourth_page(frame, vastused)
-    # TODO esitleda vastused
+
 
 
 
@@ -392,18 +353,7 @@ def show_fourth_page(frame):
 
 # TODO
 def viimasele_lehele(frame):
-    # TODO voibolla vaja global muutujaid teha
-    # seda meetodit ei ole tegelt vaja, kui teha koik vajalik show_third_page() meetodis ara
-    # aga siin voib valja kutsuda meetodid, mis koik vajaliku ara arvutab
-    # ja siis kui olemas siis liigub edasi neljandale lehele
 
-    # NAITEKS
-    # vastus = mingimeetod(jaotus, maksmised)
-    # if vastus is not {}:
-    #     print("Kõik vajalik arvutatud")
-    #     print("Liigume viimasele lehele")
-    #     show_fourth_page(frame)
-    # praegu laheb niisama edasi
     show_fourth_page(frame)
     print("Calculating the final result...")
     print("Selections by each person:")
@@ -538,7 +488,6 @@ def proceed(frame, result):
 
 # TODO
 def tagasi_algusesse(frame):
-    # TODO vaadata üle, et kõik ikkagi ära kustuks ning tuleks n.ö puhas esimene leht jälle ette
     print("Lähme tagasi esimesele lehele")
     for widget in frame.winfo_children():
         widget.pack_forget()

@@ -61,19 +61,3 @@ def tootle_pilti_pytesseractiga():
     return parsed_list
 
 # Sa void need alumised meetodid teha ka chatbot.py-s, vaata ise kuidas tahad
-
-def tootle_pytesseract_teksti(lines, dict):
-    #TODO
-    # leiaks pytesseracti antud tekstiks yles mis on tooted,
-    # palju mis maksab ning kellele need tooted lahevad
-    # praegu panin, et lines on list lausetest (string), mis pytesseract leidis tsekilt
-    # dict on sonastik (voi muu andmestruktuur), kus on inimesed ja mis tooted neile lahevad voi mis nende summa on'
-    # vaata ise mis sisend variablid peaks olema jne
-    return None
-
-
-def arvuta_summad():
-    #TODO
-    # arvutaks summad, kes kellele jaotub voi lihtsalt uuendab inimeste summasid vms
-    # vaata ise mis sisend variablid peaks olema jne
-    return None
