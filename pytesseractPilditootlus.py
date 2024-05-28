@@ -6,34 +6,12 @@ import re
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 def tootle_pilti_pytesseractiga():
-    tekst1="""Kilekott MAXIMA EPI
 
-0.10A
-Pet pudel 1,5] 0.08 N
-Vesi AURA Fruit 0.94 A
-J hkel FAZ
-azeri Hele peenleib, 0.83 A
-Spagetid BIG 4009 0.39 A
-Keeduvorst Doktori NÕO 250g 1.16 4
-Kodujuust EKSTRA 6% 0.84 A
-Mandariin väike, ka
-1.09 X 1.316 KG 1.43 4
-Allahindlus -0.13 4
-Kohup.kreem FARMI vaarika 0.57 A
-Kohup.kreem FARMI vaarika 0.57 4
-Kohup.kreem FARMI vaarika 0.57 4
-Kodujuust EKSTRA 6% 0.84 A
-Majonees Provansaal JAANI 40% 2.274
-Hapukoor ARMAS 20% 500g 0.63 A
-Hapukoor ARMAS 20% 500g 0.63 A
-Või ARMAS 82% 1809 0.95 A
-Või ARMAS 82% 1609 0.95 4
-Või ARMAS 82% 1809 0.95 4"""
     img = cv2.imread('kropeeritud.png')
     tekst = pytesseract.image_to_string(img, lang="est")
     #print(tekst)
     # Split the input text into lines
-    lines = tekst1.split("\n") ####muuta siin tekst1 ära
+    lines = tekst.split("\n") ####muuta siin tekst1 ära
 
     # Initialize the list to hold the parsed data
     parsed_list = []

@@ -373,8 +373,11 @@ def show_fourth_page(frame):
 
         y_position += 10  # Add some space between different names
 
+    button_save_to_file = tk.Button(frame, text="Save to File", command=save_to_file)
+    button_save_to_file.place(x=150, y=y_position + 20)
+
     button_algusesse = tk.Button(frame, text="Tagasi algusesse", command=lambda: tagasi_algusesse(frame))
-    button_algusesse.place(x=200, y=550)
+    button_algusesse.place(x=150, y=550)
 
     print("Nüüd neljanda lehe juures")
     # vastused = mingimeetod() VOI SIIS pane show_fourth_page(frame, vastused)
@@ -413,6 +416,19 @@ def viimasele_lehele(frame):
 
 
 rotation_angle = 0
+def save_to_file():
+    with open("kokkuvote.txt", "w", encoding="UTF-8") as file:
+        for person, items in selections.items():
+            total = sum(float(item[2]) for item in items)
+            file.write(f"{person} - Total: {total:.2f}€\n")
+            for item in items:
+                name, price, a = item[1], item[2], item[0]
+
+                price = float(price)
+                file.write(f"  {name} - {price:.2f}€\n")
+            file.write("\n")
+    print("Kokkuvõte salvestati faili kokuvote.txt")
+
 def turn_image(frame, pic):
     global rotation_angle
     rotation_angle += 90
