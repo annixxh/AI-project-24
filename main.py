@@ -233,53 +233,47 @@ name_totals = {}
 def show_third_page(frame):
     global items, selections, name_totals
 
-    def create_checklist(parent):
+    def create_checklist(frame):
+        canvas = tk.Canvas(frame)
+        scrollbar = tk.Scrollbar(frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas)
+
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            )
+        )
+
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
         check_vars = []
-        for index, (idx, name, price) in enumerate(items):
-            var = tk.BooleanVar()
-            chk = tk.Checkbutton(parent, text=f"{name} - {price:.2f}", variable=var)
-            chk.grid(row=index, column=0, sticky='w')
-            check_vars.append((var, idx, name, price))
+        for item in items:
+            var = tk.IntVar()
+            check_vars.append(var)
+            check_text = f"{item[1]} - {item[2]:.2f}€"
+            check = tk.Checkbutton(scrollable_frame, text=check_text, variable=var)
+            check.pack(anchor='w')
+
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+
         return check_vars
 
-    def show_selected():
-        global items, selections, name_totals
-        selected_items = []
-        total = 0.0
-        for var, idx, name, price in check_vars:
-            if var.get():
-                selected_items.append((name, price))
-                total += price
+    def save_selection():
+        entry_value = entry_kysimus.get()
+        selected_items = [items[i] for i, var in enumerate(check_vars) if var.get() == 1]
+        selections[entry_value] = selected_items
+        print("Selected items:", selected_items)
+        print("Selections:", selections)
 
-        # Update items list by removing selected items
-        remaining_items = [item for item in items if item[1] not in [name for name, price in selected_items]]
-        items[:] = remaining_items
+        # Remove selected items from the items list
+        global items
+        items = [item for i, item in enumerate(items) if not check_vars[i].get()]
 
-        # Save the selections under the name entered
-        person = entry_kysimus.get()
-        if person:
-            if person not in selections:
-                selections[person] = []
-                name_totals[person] = 0.0
-            selections[person].extend(selected_items)
-            name_totals[person] += total
-
-        # Clear the entry and update the checklist
-        entry_kysimus.delete(0, tk.END)
-        update_checklist()
-
-        # If all items are selected, transition to the fourth page
-        if not items:
-            show_fourth_page(frame)
-
-    def update_checklist():
-        # Clear the current checklist
-        for widget in checklist_frame.winfo_children():
-            widget.destroy()
-
-        # Create a new checklist with the remaining items
-        global check_vars
-        check_vars = create_checklist(checklist_frame)
+        # Refresh the checklist display
+        show_third_page(frame)
 
     for widget in frame.winfo_children():
         widget.destroy()
@@ -290,14 +284,18 @@ def show_third_page(frame):
 
     # leiab pildilt pytesseractiga teksti
     # NB! Failis pytesserractPilditootlus on vaja muuta tesseract path oma arvutis olevaks pathiks
-    teksti_read = pytesseractPilditootlus.tootle_pilti_pytesseractiga()
-    print("Pildilt loetud tekst on: ")
-    print(teksti_read)
+    #teksti_read = pytesseractPilditootlus.tootle_pilti_pytesseractiga()
+    #print("Pildilt loetud tekst on: ")
+    #print(teksti_read)
 
-    # Initialize items and selections
-    items = teksti_read
-    selections = {}
-    name_totals = {}
+
+    if not items:
+        teksti_read = pytesseractPilditootlus.tootle_pilti_pytesseractiga()
+        print("Pildilt loetud tekst on: ")
+        print(teksti_read)
+        items = teksti_read
+        selections = {}
+        name_totals = {}
 
     lable_kysimus = tk.Label(frame, text="Kelle vahel soovid summad jagada?")
     lable_kysimus.place(x=150, y=150)
@@ -305,7 +303,7 @@ def show_third_page(frame):
     entry_kysimus = tk.Entry(frame)
     entry_kysimus.place(x=150, y=200)
 
-    save_button = tk.Button(frame, text="Save", command=show_selected)
+    save_button = tk.Button(frame, text="Save", command=save_selection)
     save_button.place(x=300, y=200)
 
     checklist_frame = tk.Frame(frame)
@@ -313,7 +311,7 @@ def show_third_page(frame):
     check_vars = create_checklist(checklist_frame)
 
     button_vastuse_juurde = tk.Button(frame, text="Arvuta vastus", command=lambda: viimasele_lehele(frame))
-    button_vastuse_juurde.place(x=200, y=500)
+    button_vastuse_juurde.place(x=200, y=525)
 
     # show_selected_button = tk.Button(frame, text="Show Selected", command=show_selected)
     # show_selected_button.place(x=150, y=450)
