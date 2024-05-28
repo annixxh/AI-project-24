@@ -295,23 +295,27 @@ def show_third_page(frame):
     print(teksti_read)
     if not items:
         if len(selections) > 0:
+            for widget in frame.winfo_children():
+                widget.destroy()
             viimasele_lehele(frame)
-        items = teksti_read
-        selections = {}
-        name_totals = {}
+        else:
+            items = teksti_read
+            selections = {}
+            name_totals = {}
+    if items:
 
-    lable_kysimus = tk.Label(frame, text="Kelle vahel soovid summad jagada?")
-    lable_kysimus.place(x=150, y=150)
+        lable_kysimus = tk.Label(frame, text="Kelle vahel soovid summad jagada?")
+        lable_kysimus.place(x=150, y=150)
 
-    entry_kysimus = tk.Entry(frame)
-    entry_kysimus.place(x=150, y=200)
+        entry_kysimus = tk.Entry(frame)
+        entry_kysimus.place(x=150, y=200)
 
-    save_button = tk.Button(frame, text="Save", command=save_selection)
-    save_button.place(x=300, y=200)
+        save_button = tk.Button(frame, text="Save", command=save_selection)
+        save_button.place(x=300, y=200)
 
-    checklist_frame = tk.Frame(frame)
-    checklist_frame.place(x=150, y=250)
-    check_vars = create_checklist(checklist_frame)
+        checklist_frame = tk.Frame(frame)
+        checklist_frame.place(x=150, y=250)
+        check_vars = create_checklist(checklist_frame)
 
     #button_vastuse_juurde = tk.Button(frame, text="Arvuta vastus", command=lambda: viimasele_lehele(frame))
     #button_vastuse_juurde.place(x=200, y=525)
@@ -350,13 +354,26 @@ def show_fourth_page(frame):
     for widget in frame.winfo_children():
         widget.destroy()
 
-    label_title = tk.Label(frame, text="Jaotused on: ", font=("Helvetica", 16))
-    label_title.place(x=150, y=100)
+    label_title = tk.Label(frame, text="Tšekk jaotati nii: ", font=("Helvetica", 16))
+    label_title.place(x=150, y=20)
     print("Nüüd neljanda lehe juures")
 
+    y_position = 60  # Starting position for displaying information
+    for name, items in selections.items():
+        total = sum(item[2] for item in items)
+        name_label = tk.Label(frame, text=f"{name} - Kogu summa: {total:.2f}€", font=("Helvetica", 14))
+        name_label.place(x=150, y=y_position)
+        y_position += 30
+
+        for item in items:
+            item_label = tk.Label(frame, text=f"{item[1]} - {item[2]:.2f}€")
+            item_label.place(x=170, y=y_position)
+            y_position += 20
 
 
-    button_algusesse = tk.Button(text="Tagasi algusesse", command=lambda: tagasi_algusesse(frame))
+        y_position += 10  # Add some space between different names
+
+    button_algusesse = tk.Button(frame, text="Tagasi algusesse", command=lambda: tagasi_algusesse(frame))
     button_algusesse.place(x=200, y=550)
 
     print("Nüüd neljanda lehe juures")
@@ -389,8 +406,10 @@ def viimasele_lehele(frame):
     print("Selections by each person:")
     for person, items in selections.items():
         print(f"{person}:")
-        for name, price in items:
-            print(f"  {name} - {price:.2f}")
+        for item in items:
+            name, price, a = item[1], item[2], item[0]
+            price = float(price)
+            print(f"  {name} - {price:.2f}€")
 
 
 rotation_angle = 0
