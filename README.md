@@ -8,6 +8,10 @@ Autorid: Anne-Mari Kasemetsa, Stina Maripuu
 Programm laseb kasutajal laadida üles pildi, küsib kasutajalt kelle vahel ta soovib mis tooted jaotada ja arvutab automaatselt ära, kes kellele kui palju võlgu on.
 Programm kasutab Tesseract-OCR-i, et tuvastada tehisintellekti abil tšekil olev tekst
 
+## Näidivideo
+
+[![Demo Video](http://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://drive.google.com/uc?export=view&id=1zamEWNwFbL3AnXjg97mqFZPmso6fGG8A)
+
 ## Jooksutamise juhend
 
 ### Vajalikud package'id:
@@ -93,6 +97,3 @@ Juhend:
 
    Tekib ette jaotus, kes kui palju kellele võlgu on.
    Tulemust on võimalik alla laadida tekstifailina.
-
-Näidisvideo: https://drive.google.com/file/d/1zamEWNwFbL3AnXjg97mqFZPmso6fGG8A/view?usp=sharing 
-
