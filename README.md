@@ -82,11 +82,15 @@ Juhend:
 
    kui kropeeritud pilt sobib, siis vajutada nuppu 'Liigu edasi'
 9. **Tekib ette uus leht, sellel lehel tuleb sisestada:**
+   
+   Vali kõik tooted, mis lähevad ühele inimesele, ning kirjuta tema nimi
 
-   kelle vahel jagada tooteid (inimeste nimed kujul: esimeneNimi, teineNimi)
+   Kui kõik selle inimese tooted on valitud ja nimi kirjutatud, siis vajuta 'salvesta'
    
-   mis tooted kellele jagada (#TODO)
-   
-   kes, kui palju maksis (#TODO)
+   Korda kõikide inimestega, kelle vahel tahad jagada ning tooted saavad otsa
+
 10. **Kui vajutada nuppu 'Arvuta tulemus', siis avaneb viimane leht, kus on arvutatud iga inimese puhul palju ta peab kellele maksma**
+
+   Tekib ette jaotus, kes kui palju kellele võlgu on.
+   Tulemust on võimalik alla laadida tekstifailina.
 
