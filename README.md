@@ -10,7 +10,7 @@ Programm kasutab Tesseract-OCR-i, et tuvastada tehisintellekti abil tšekil olev
 
 ## Näidivideo
 
-[![Demo Video](http://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://drive.google.com/uc?export=view&id=1zamEWNwFbL3AnXjg97mqFZPmso6fGG8A)
+https://drive.google.com/file/d/1zamEWNwFbL3AnXjg97mqFZPmso6fGG8A/view?usp=sharing 
 
 ## Jooksutamise juhend
 
