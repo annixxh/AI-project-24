@@ -94,3 +94,5 @@ Juhend:
    Tekib ette jaotus, kes kui palju kellele võlgu on.
    Tulemust on võimalik alla laadida tekstifailina.
 
+Näidisvideo: https://drive.google.com/file/d/1zamEWNwFbL3AnXjg97mqFZPmso6fGG8A/view?usp=sharing 
+
